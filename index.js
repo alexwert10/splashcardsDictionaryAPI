@@ -6,9 +6,64 @@ const cheerio = require('cheerio');
 
 const app = express();
 
+const defaultResponse = [
+  'Welcome To The Splashcards Dictionary API. To get started add a "word" parameter like https://splashcards-dictionary-api-8297a470c215.herokuapp.com/version1?word=example',
+  'For missing words, add them to Wiktionary at https://en.wiktionary.org/wiki/missing-word',
+  'For issues and feature requests, add an issue on github (https://github.com/alexwert10/splashcardsDictionaryAPI/issues) or contact us (splashcards.com)',
+  'Data will be returned in this format: ',
+  {
+    license: [
+      {
+        sourceURL: 'https://en.wiktionary.org/wiki/example',
+        licenseName: 'GNU General Public License Version 3',
+        licenseText: 'https://www.gnu.org/licenses/fdl-1.3.html#license-text',
+      },
+    ],
+    definition: [
+      {
+        'Etymology 1': [
+          {
+            Noun: [
+              'Definition 1',
+              'Definition 2',
+              [
+                'Subdefinition 1 for Definition 2',
+                'Subdefinition 2 for Definition 2',
+              ],
+              'Definition 3',
+            ],
+          },
+          {
+            Verb: ['Definition 4'],
+          },
+        ],
+        'Etymology 2': [
+          {
+            Adjective: ['Definition 5'],
+          },
+          {
+            Noun: ['Definition 6'],
+          },
+        ],
+      },
+    ],
+  },
+];
 app.get('/', async (req, res) => {
+  return res.json(defaultResponse);
+});
+
+app.get('/version1', async (req, res) => {
   if (req.query.word) {
-    const url = `https://en.wiktionary.org/wiki/${req.query.word}`;
+    const word = req.query.word.toLowerCase();
+    const url = `https://en.wiktionary.org/wiki/${word}`;
+    const legalStuff = [
+      {
+        sourceURL: url,
+        licenseName: 'GNU General Public License Version 3',
+        licenseText: 'https://www.gnu.org/licenses/fdl-1.3.html#license-text',
+      },
+    ];
     let result = await axios
       .get(url)
       .then((res) => {
@@ -95,17 +150,18 @@ app.get('/', async (req, res) => {
               }
             });
           } else {
+            return res.json(defaultResponse);
           }
         });
 
-        return definition;
+        return { license: legalStuff, definition: definition };
       })
       .catch((err) => {
-        return err;
+        return `${word} does not appear to be a word that is documented in Wiktionary. Check your spelling. If the word exists in wiktionary at ${url}, then submit an issue on github (https://github.com/alexwert10/splashcardsDictionaryAPI/issues) or contact us (splashcards.com). If the word doesn't exist in wiktionary, but it should, then maybe you should add it :).`;
       });
     res.json(result);
   } else {
-    res.json('Hello World');
+    res.json(defaultResponse);
   }
 });
 

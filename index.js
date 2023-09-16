@@ -149,15 +149,14 @@ app.get('/version1', async (req, res) => {
                 ][currentPartOfSpeech].push(subDefinitions);
               }
             });
-          } else {
-            return res.json(defaultResponse);
           }
         });
 
         return { license: legalStuff, definition: definition };
       })
       .catch((err) => {
-        return `${word} does not appear to be a word that is documented in Wiktionary. Check your spelling. If the word exists in wiktionary at ${url}, then submit an issue on github (https://github.com/alexwert10/splashcardsDictionaryAPI/issues) or contact us (splashcards.com). If the word doesn't exist in wiktionary, but it should, then maybe you should add it :).`;
+        console.log(err);
+        return `${word} does not appear to be a word that is documented in Wiktionary. Check your spelling. If the word exists in wiktionary at ${url}, then submit an issue on github (https://github.com/alexwert10/splashcardsDictionaryAPI/issues) or contact us (splashcards.com). If the word doesn't exist in wiktionary, but it should, then maybe you should add it :)`;
       });
     res.json(result);
   } else {

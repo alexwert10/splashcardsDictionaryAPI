@@ -177,7 +177,18 @@ app.get('/version1', async (req, res) => {
                       // get the text from those children
                       // put that text into a seperate array
                       // and then remove those children
-                      subDefinitions.push($subDefinitionLi.text().trim());
+                      if ($subDefinitionLi.text().trim().includes('\n')) {
+                        console.log(
+                          'has a newline: ',
+                          $subDefinitionLi.text().trim()
+                        );
+                      }
+                      subDefinitions.push(
+                        $subDefinitionLi
+                          .text()
+                          .trim()
+                          .replace('\n', '\n\tExample: ')
+                      );
                       // need to remove the children from subDefinitions. but not for the whole thing.
                       $(this).remove();
                     }

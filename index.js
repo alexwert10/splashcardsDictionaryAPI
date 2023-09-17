@@ -22,20 +22,20 @@ const getDefinitionAsString = (definition) => {
       //   definitionAsString += '\n';
       // }
       definitionAsString += Object.keys(partOfSpeech)[0];
-      definitionAsString += '\n';
+      definitionAsString += '\\n';
 
       let index = 1;
       for (meaning of Object.values(partOfSpeech)[0]) {
         if (typeof meaning == 'object') {
           for (subDefinition of meaning) {
-            definitionAsString += '\t--';
+            definitionAsString += '\\t--';
             definitionAsString += subDefinition;
-            definitionAsString += '\n';
+            definitionAsString += '\\n';
           }
         } else {
           console.log('meaning: ', meaning);
-          definitionAsString += '\t';
-          definitionAsString += `${index}. ${meaning}\n`;
+          definitionAsString += '\\t';
+          definitionAsString += `${index}. ${meaning}\\n`;
           index++;
         }
       }
@@ -195,7 +195,7 @@ app.get('/version1', async (req, res) => {
         return {
           license: legalStuff,
           definition: definition,
-          definitionAsString: JSON.stringify(getDefinitionAsString(definition)),
+          definitionAsString: getDefinitionAsString(definition),
         };
       })
       .catch((err) => {

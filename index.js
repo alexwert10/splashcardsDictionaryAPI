@@ -28,7 +28,7 @@ const getDefinitionAsString = (definition) => {
       for (meaning of Object.values(partOfSpeech)[0]) {
         if (typeof meaning == 'object') {
           for (subDefinition of meaning) {
-            definitionAsString += '\\t--';
+            definitionAsString += '\\t\\t--';
             definitionAsString += subDefinition;
             definitionAsString += '\\n';
           }
@@ -178,16 +178,12 @@ app.get('/version1', async (req, res) => {
                       // put that text into a seperate array
                       // and then remove those children
                       if ($subDefinitionLi.text().trim().includes('\n')) {
-                        console.log(
-                          'has a newline: ',
-                          $subDefinitionLi.text().trim()
-                        );
                       }
                       subDefinitions.push(
                         $subDefinitionLi
                           .text()
                           .trim()
-                          .replace('\n', '\n\tExample: ')
+                          .replaceAll('\n', '\n\t\tExample: ')
                       );
                       // need to remove the children from subDefinitions. but not for the whole thing.
                       $(this).remove();

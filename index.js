@@ -33,7 +33,7 @@ const getDefinitionAsString = (definition) => {
             definitionAsString += '\\n';
           }
         } else {
-          console.log('meaning: ', meaning);
+          // console.log('meaning: ', meaning);
           definitionAsString += '\\t';
           definitionAsString += `${index}. ${meaning}\\n`;
           index++;
@@ -41,7 +41,7 @@ const getDefinitionAsString = (definition) => {
       }
     }
   }
-  console.log(definitionAsString);
+  // console.log(definitionAsString);
   return definitionAsString;
 };
 
@@ -119,12 +119,12 @@ app.get('/version1', async (req, res) => {
         // get data from the start of the "English" section to the next H2 (which will be the next language)
         const englishSection = startNode.nextUntil('h2').each(function () {
           if ($('span[id^=Etymology]', this).html()) {
-            currentEtymo = $('span[id^=Etymology]', this).text();
+            currentEtymo = $('span[id^=Etymology]', this).text().trim();
             currentEtymoIndex++;
             let currentEtymoObj = {};
             currentEtymoObj[currentEtymo] = [];
             definition.push(currentEtymoObj);
-            console.log('new etymo: ', currentEtymo);
+            // console.log('new etymo: ', currentEtymo);
             currentPartOfSpeechIndex = -1;
           } else if (
             //noun, pronoun, verb, adjective, adverb, preposition, conjunction, and interjection.
@@ -137,7 +137,9 @@ app.get('/version1', async (req, res) => {
             currentPartOfSpeech = $(
               'span[id^=Noun], span[id^=Verb], span[id^=Adjective], span[id^=Pronoun], span[id^=Adverb], span[id^=Preposition], span[id^=Conjunction], span[id^=Interjection]',
               this
-            ).text();
+            )
+              .text()
+              .trim();
             // console.log('new part of speech: ', currentPartOfSpeech);
             currentPartOfSpeechIndex++;
             let currentPartOfSpeechObj = {};
@@ -161,14 +163,17 @@ app.get('/version1', async (req, res) => {
 
             $listOfDefinitions.each(function () {
               let subDefinitions = [];
-              console.log(currentPartOfSpeech);
+              // console.log(currentPartOfSpeech);
               let $primaryDefinition = $(this);
+              // remove the text of any reference. Those look like this: [1]
+              $primaryDefinition.find('sup[class^=reference]').remove();
               $primaryDefinition.children().each(function () {
                 if ($(this)[0].name == 'ol') {
                   let $subDefinitionListParent = $(this);
                   $subDefinitionListParent.children().each(function () {
                     if ($(this)[0].name == 'li' && $(this).text().trim()) {
                       let $subDefinitionLi = $(this);
+
                       // get the text from those children
                       // put that text into a seperate array
                       // and then remove those children

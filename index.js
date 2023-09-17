@@ -6,6 +6,45 @@ const cheerio = require('cheerio');
 
 const app = express();
 
+const getDefinitionAsString = (definition) => {
+  let definitionAsString = '';
+  let entIndex = 0;
+  for (entymology of definition) {
+    // if (entIndex != 0) {
+    //   definitionAsString += '\n';
+    // }
+    entIndex++;
+    // console.log('ent: ', entymology);
+    partOfSpeechIndex = 0;
+    for (partOfSpeech of Object.values(entymology)[0]) {
+      partOfSpeechIndex++;
+      // if (partOfSpeechIndex != 0) {
+      //   definitionAsString += '\n';
+      // }
+      definitionAsString += Object.keys(partOfSpeech)[0];
+      definitionAsString += '\n';
+
+      let index = 1;
+      for (meaning of Object.values(partOfSpeech)[0]) {
+        if (typeof meaning == 'object') {
+          for (subDefinition of meaning) {
+            definitionAsString += '\t--';
+            definitionAsString += subDefinition;
+            definitionAsString += '\n';
+          }
+        } else {
+          console.log('meaning: ', meaning);
+          definitionAsString += '\t';
+          definitionAsString += `${index}. ${meaning}\n`;
+          index++;
+        }
+      }
+    }
+  }
+  console.log(definitionAsString);
+  return definitionAsString;
+};
+
 const defaultResponse = [
   'Welcome To The Splashcards Dictionary API. To get started add a "word" parameter like https://splashcards-dictionary-api-8297a470c215.herokuapp.com/version1?word=example',
   'For missing words, add them to Wiktionary at https://en.wiktionary.org/wiki/missing-word',
@@ -47,6 +86,7 @@ const defaultResponse = [
         ],
       },
     ],
+    definitionAsString: 'Etymology 1\\nNoun\\n etc.',
   },
 ];
 app.get('/', async (req, res) => {
@@ -152,7 +192,11 @@ app.get('/version1', async (req, res) => {
           }
         });
 
-        return { license: legalStuff, definition: definition };
+        return {
+          license: legalStuff,
+          definition: definition,
+          definitionAsString: JSON.stringify(getDefinitionAsString(definition)),
+        };
       })
       .catch((err) => {
         console.log(err);

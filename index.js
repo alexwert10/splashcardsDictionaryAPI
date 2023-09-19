@@ -165,6 +165,10 @@ app.get('/version1', async (req, res) => {
               let subDefinitions = [];
               // console.log(currentPartOfSpeech);
               let $primaryDefinition = $(this);
+              // get any examples under the main definition and add a tab and the text Example:
+              $('<p>\\tExample: </p>').insertBefore(
+                $primaryDefinition.find('div[class^=h-usage-example]')
+              );
               // remove the text of any reference. Those look like this: [1]
               $primaryDefinition.find('sup[class^=reference]').remove();
               $primaryDefinition.children().each(function () {

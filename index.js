@@ -169,8 +169,11 @@ app.get('/version1', async (req, res) => {
               $('<p>\\tExample: </p>').prependTo(
                 $primaryDefinition.find('div[class^=h-usage-example]')
               );
+
               // remove the text of any reference. Those look like this: [1]
               $primaryDefinition.find('sup[class^=reference]').remove();
+              $primaryDefinition.find('span[class^=maintenance-line]').remove();
+
               $primaryDefinition.children().each(function () {
                 if ($(this)[0].name == 'ol') {
                   let $subDefinitionListParent = $(this);

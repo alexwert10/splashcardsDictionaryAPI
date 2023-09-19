@@ -166,7 +166,7 @@ app.get('/version1', async (req, res) => {
               // console.log(currentPartOfSpeech);
               let $primaryDefinition = $(this);
               // get any examples under the main definition and add a tab and the text Example:
-              $('<p>\\tExample: </p>').insertBefore(
+              $('<p>\\tExample: </p>').prependTo(
                 $primaryDefinition.find('div[class^=h-usage-example]')
               );
               // remove the text of any reference. Those look like this: [1]
@@ -181,14 +181,14 @@ app.get('/version1', async (req, res) => {
                       // get the text from those children
                       // put that text into a seperate array
                       // and then remove those children
-                      if ($subDefinitionLi.text().trim().includes('\n')) {
-                      }
+
+                      // if ($subDefinitionLi.text().trim().includes('\n')) {
+                      // }
                       subDefinitions.push(
-                        $subDefinitionLi
-                          .text()
-                          .trim()
-                          .replaceAll('\n', '\n\t\tExample: ')
+                        $subDefinitionLi.text().trim()
+                        // .replaceAll('\n', '\n\t\tExample: ')
                       );
+
                       // need to remove the children from subDefinitions. but not for the whole thing.
                       $(this).remove();
                     }

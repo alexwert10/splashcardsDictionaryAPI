@@ -130,17 +130,17 @@ app.get('/version1', async (req, res) => {
             //noun, pronoun, verb, adjective, adverb, preposition, conjunction, and interjection.
 
             $(
-              'span[id^=Noun], span[id^=Verb], span[id^=Adjective], span[id^=Pronoun], span[id^=Adverb], span[id^=Preposition], span[id^=Conjunction], span[id^=Interjection]',
+              'span[id^=Noun], span[id^=Verb], span[id^=Adjective], span[id^=Pronoun], span[id^=Adverb], span[id^=Preposition], span[id^=Conjunction], span[id^=Interjection], span[id^=Proverb]',
               this
             ).html()
           ) {
+            console.log('HERE');
             currentPartOfSpeech = $(
-              'span[id^=Noun], span[id^=Verb], span[id^=Adjective], span[id^=Pronoun], span[id^=Adverb], span[id^=Preposition], span[id^=Conjunction], span[id^=Interjection]',
+              'span[id^=Noun], span[id^=Verb], span[id^=Adjective], span[id^=Pronoun], span[id^=Adverb], span[id^=Preposition], span[id^=Conjunction], span[id^=Interjection], span[id^=Proverb]',
               this
             )
               .text()
               .trim();
-            // console.log('new part of speech: ', currentPartOfSpeech);
             currentPartOfSpeechIndex++;
             let currentPartOfSpeechObj = {};
             currentPartOfSpeechObj[currentPartOfSpeech] = [];
@@ -206,7 +206,11 @@ app.get('/version1', async (req, res) => {
                   });
                 }
               });
-
+              console.log('definition: ', definition);
+              console.log('currentetymoindex: ', currentEtymoIndex);
+              console.log('currentetymo: ', currentEtymo);
+              console.log('current pos index: ', currentPartOfSpeechIndex);
+              console.log('current partof speech ', currentPartOfSpeech);
               definition[currentEtymoIndex][currentEtymo][
                 currentPartOfSpeechIndex
               ][currentPartOfSpeech].push($(this).text().trim());

@@ -130,13 +130,13 @@ app.get('/version1', async (req, res) => {
             //noun, pronoun, verb, adjective, adverb, preposition, conjunction, and interjection.
 
             $(
-              'span[id^=Noun], span[id^=Verb], span[id^=Adjective], span[id^=Pronoun], span[id^=Adverb], span[id^=Preposition], span[id^=Conjunction], span[id^=Interjection], span[id^=Proverb]',
+              'span[id^=Noun], span[id^=Verb], span[id^=Adjective], span[id^=Pronoun], span[id^=Adverb], span[id^=Preposition], span[id^=Conjunction], span[id^=Interjection], span[id^=Proverb], span[id^=Phrase]',
               this
             ).html()
           ) {
             console.log('HERE');
             currentPartOfSpeech = $(
-              'span[id^=Noun], span[id^=Verb], span[id^=Adjective], span[id^=Pronoun], span[id^=Adverb], span[id^=Preposition], span[id^=Conjunction], span[id^=Interjection], span[id^=Proverb]',
+              'span[id^=Noun], span[id^=Verb], span[id^=Adjective], span[id^=Pronoun], span[id^=Adverb], span[id^=Preposition], span[id^=Conjunction], span[id^=Interjection], span[id^=Proverb], span[id^=Phrase]',
               this
             )
               .text()

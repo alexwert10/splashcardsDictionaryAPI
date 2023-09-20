@@ -546,12 +546,10 @@ const words = [
   'run up',
   'thank you',
   'carpe diem',
-  // 'shit happens',
-  // 'love you',
-  // 'you win',
-  // 'believe me',
-  // 'trust me',
-  // 'you first',
+  'shit happens',
+  'love you',
+  'you win',
+  'believe me',
 ];
 
 module.exports = {

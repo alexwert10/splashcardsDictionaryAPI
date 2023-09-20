@@ -26,8 +26,10 @@ const getDefinition = (word) => {
 };
 
 let allPromises = [];
-for (word of vocabWords.words) {
-  allPromises.push(getDefinition(word));
+for (const index in vocabWords.words) {
+  if (index % 4 == 0) {
+    allPromises.push(getDefinition(vocabWords.words[index]));
+  }
 }
 
 Promise.all(allPromises).then((res) => {

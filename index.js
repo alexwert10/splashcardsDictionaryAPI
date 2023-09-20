@@ -14,7 +14,6 @@ const getDefinitionAsString = (definition) => {
     //   definitionAsString += '\n';
     // }
     entIndex++;
-    // console.log('ent: ', entymology);
     partOfSpeechIndex = 0;
     for (partOfSpeech of Object.values(entymology)[0]) {
       partOfSpeechIndex++;
@@ -33,7 +32,6 @@ const getDefinitionAsString = (definition) => {
             definitionAsString += '\\n';
           }
         } else {
-          // console.log('meaning: ', meaning);
           definitionAsString += '\\t';
           definitionAsString += `${index}. ${meaning}\\n`;
           index++;
@@ -41,7 +39,6 @@ const getDefinitionAsString = (definition) => {
       }
     }
   }
-  // console.log(definitionAsString);
   return definitionAsString;
 };
 
@@ -124,7 +121,6 @@ app.get('/version1', async (req, res) => {
             let currentEtymoObj = {};
             currentEtymoObj[currentEtymo] = [];
             definition.push(currentEtymoObj);
-            // console.log('new etymo: ', currentEtymo);
             currentPartOfSpeechIndex = -1;
           } else if (
             //noun, pronoun, verb, adjective, adverb, preposition, conjunction, and interjection.
@@ -134,7 +130,6 @@ app.get('/version1', async (req, res) => {
               this
             ).html()
           ) {
-            console.log('HERE');
             currentPartOfSpeech = $(
               'span[id^=Noun], span[id^=Verb], span[id^=Adjective], span[id^=Pronoun], span[id^=Adverb], span[id^=Preposition], span[id^=Conjunction], span[id^=Interjection], span[id^=Proverb], span[id^=Phrase]',
               this
@@ -166,12 +161,8 @@ app.get('/version1', async (req, res) => {
             $listOfDefinitions = $(this).children(':not(:empty)').clone();
             $listOfDefinitions.find('ul').remove();
 
-            // console.log(definition[currentEtymoIndex][currentEtymo]);
-            // console.log(currentPartOfSpeechIndex);
-
             $listOfDefinitions.each(function () {
               let subDefinitions = [];
-              // console.log(currentPartOfSpeech);
               let $primaryDefinition = $(this);
               // get any examples under the main definition and add a tab and the text Example:
               $('<p>\\tExample: </p>').prependTo(
@@ -206,11 +197,18 @@ app.get('/version1', async (req, res) => {
                   });
                 }
               });
-              console.log('definition: ', definition);
-              console.log('currentetymoindex: ', currentEtymoIndex);
-              console.log('currentetymo: ', currentEtymo);
-              console.log('current pos index: ', currentPartOfSpeechIndex);
-              console.log('current partof speech ', currentPartOfSpeech);
+              // This if statement handles cases where there is no part of speech. See "apt" for an exmaple where in etymology 2 it references the use of "apt" as an abreviation for apartment
+              if (currentPartOfSpeechIndex == -1) {
+                currentPartOfSpeech = 'Other';
+                currentPartOfSpeechIndex++;
+                let currentPartOfSpeechObj = {};
+                currentPartOfSpeechObj[currentPartOfSpeech] = [];
+
+                definition[currentEtymoIndex][currentEtymo].push(
+                  currentPartOfSpeechObj
+                );
+              }
+
               definition[currentEtymoIndex][currentEtymo][
                 currentPartOfSpeechIndex
               ][currentPartOfSpeech].push($(this).text().trim());

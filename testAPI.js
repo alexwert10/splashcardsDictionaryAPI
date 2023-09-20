@@ -31,9 +31,12 @@ for (word of vocabWords.words) {
 }
 
 Promise.all(allPromises).then((res) => {
+  let overallResult = 'ALL GOOD!';
   for (individualRes of res) {
     if (individualRes != true) {
       console.log(individualRes);
+      overallResult = 'NOT GOOD';
     }
   }
+  console.log(overallResult);
 });

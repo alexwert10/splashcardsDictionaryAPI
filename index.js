@@ -144,10 +144,18 @@ app.get('/version1', async (req, res) => {
             currentPartOfSpeechIndex++;
             let currentPartOfSpeechObj = {};
             currentPartOfSpeechObj[currentPartOfSpeech] = [];
+            // This if statement covers the case where there is an undefined etymology. See the Wiktionary entry of "run up" as an example
+            if (!!definition[currentEtymoIndex] == false) {
+              currentEtymo = 'undefined etymology';
+              currentEtymoIndex++;
+              let currentEtymoObj = {};
+              currentEtymoObj[currentEtymo] = [];
+              definition.push(currentEtymoObj);
+            }
+
             definition[currentEtymoIndex][currentEtymo].push(
               currentPartOfSpeechObj
             );
-            // console.log('part of speech: ', currentPartOfSpeech);
 
             // obj[currentEtymo][currentPartOfSpeech] = ;
           } else if (
